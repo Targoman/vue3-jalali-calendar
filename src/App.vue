@@ -83,11 +83,11 @@ export default {
 <style lang="scss">
 @font-face {
   font-family: Vazir;
-  src: url('~vazir-font/dist/Vazir.eot');
-  src: url('~vazir-font/dist/Vazir.eot?#iefix') format('embedded-opentype'),
-  url('~vazir-font/dist/Vazir.woff2') format('woff2'),
-  url('~vazir-font/dist/Vazir.woff') format('woff'),
-  url('~vazir-font/dist/Vazir.ttf') format('truetype');
+  src: url('~vazir-font/dist/Vazir-Medium.eot');
+  src: url('~vazir-font/dist/Vazir-Medium.eot?#iefix') format('embedded-opentype'),
+  url('~vazir-font/dist/Vazir-Medium.woff2') format('woff2'),
+  url('~vazir-font/dist/Vazir-Medium.woff') format('woff'),
+  url('~vazir-font/dist/Vazir-Medium.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
