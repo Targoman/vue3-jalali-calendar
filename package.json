@@ -57,7 +57,8 @@
     "sass-loader": "^10.1.1",
     "vazir-font": "^27.2.2",
     "vue": "^2.6.12",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.12",
+    "vue-persian-datetime-picker": "^2.10.4"
   },
   "browserslist": [
     "> 1%",

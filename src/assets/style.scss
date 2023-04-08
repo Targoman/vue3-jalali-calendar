@@ -1,3 +1,4 @@
+@import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
 
 /** Extra small devices (phones, 600px and down) */
@@ -36,6 +37,7 @@ $event_black: #262626;
 
 $border_color: #ddd;
 $calendar_border: 1px solid $border_color;
+$color-red-lighten: rgba(255, 0, 37, 0.1);
 
 @mixin calendar-row {
   display: flex;
@@ -197,6 +199,43 @@ $calendar_border: 1px solid $border_color;
         display: none;
       }
 
+      .week_events {
+        position: absolute;
+        overflow: auto;
+        overflow-x: hidden;
+        height: calc(100% - 2em);
+        width: 100%;
+        top: 2em;
+
+        /* width */
+        &::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        /* Track */
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+
+        .more_event_btn {
+          z-index: 1;
+          position: sticky !important;
+          max-width: 9.5rem;
+          padding: 8px 0 !important;
+          border-radius: 0 !important;
+        }
+      }
+
       .vpc_day {
         @include calendar-cell;
         min-height: 120px;
@@ -207,6 +246,7 @@ $calendar_border: 1px solid $border_color;
 
           .vpc_day-number {
             @include shadow-text;
+            cursor: default;
           }
         }
 
@@ -247,9 +287,18 @@ $calendar_border: 1px solid $border_color;
           background-color: $not_current_month_background !important;
         }
 
+        &.vpc_weekend {
+          background-color: $not_current_month_background !important;
+        }
+
+        &.vpc_vacation {
+          background-color: rgba(255, 0, 0, 0.1) !important;
+        }
+
         .vpc_day-number {
           font-weight: bold;
           line-height: 1.2em;
+          cursor: pointer;
         }
 
         &:last-child {
@@ -260,7 +309,7 @@ $calendar_border: 1px solid $border_color;
       /* Events */
       .vpc_event {
         @include text-center;
-        font-size: 0.9em;
+        font-size: 0.7em;
         height: 1.2em;
         padding-left: 0.78em;
         border-color: #e0e0f0;
@@ -272,6 +321,10 @@ $calendar_border: 1px solid $border_color;
         background-color: #666;
         color: #fff;
         user-select: none;
+
+        &:focus {
+          box-shadow: none;
+        }
 
         &.offset0 {
           right: 0;
@@ -410,9 +463,11 @@ $calendar_border: 1px solid $border_color;
               position: absolute;
               top: 0.1em;
             }
+
             .vpc_event-start-time span {
               display: contents;
             }
+
             .vpc_event-title {
               margin: 0 0.8em;
             }
@@ -446,4 +501,45 @@ $calendar_border: 1px solid $border_color;
     opacity: 0;
   }
 
+  .popover-show-event-details {
+    width: 250px;
+
+    .popover-body {
+      .card-header-class {
+
+        .event-title {
+          font-size: 0.65rem;
+          max-width: 75%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .event-action {
+          .fa-pencil-square-o, .fa-trash-o {
+            font-size: 1rem;
+            margin: 0 0.2rem;
+            cursor: pointer;
+          }
+
+          .fa-pencil-square-o:hover {
+            color: #0093ee;
+          }
+
+          .fa-trash-o:hover {
+            color: #f5365c;
+          }
+        }
+      }
+
+      .card-body-class , .card-footer-class {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .popover-show-vacation-description{
+    width: 150px;
+  }
 }
+

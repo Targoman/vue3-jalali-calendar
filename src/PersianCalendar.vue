@@ -1,94 +1,206 @@
 <template>
     <div id="persian-calendar">
-      <!--CALENDAR HEADER-->
-      <div id="vpc_header" slot="header">
-        <div id="vpc_date-control">
-          <div class="vpc_control-btn" @click="subtractPeriod" :disabled="isBeforeMin()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          </div>
+        <!--CALENDAR HEADER-->
+        <div id="vpc_header" slot="header">
+            <div id="vpc_date-control">
+                <div class="vpc_control-btn" @click="subtractPeriod" :disabled="isBeforeMin()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mb-2" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
 
-          <span v-if="isWeekPeriod" class="vpc_now-date">
-              {{displayRangeText.toPersianDigits()}}
-          </span>
-          <span v-else class="vpc_now-date">{{currentDate.locale('fa').format('jMMMM jYYYY').toPersianDigits()}}</span>
+                <span v-if="isWeekPeriod" class="vpc_now-date">
+                   {{ displayRangeText.toPersianDigits() }}
+                </span>
+                <span v-else class="vpc_now-date">
+                    {{ currentDate.locale('fa').format('jMMMM jYYYY').toPersianDigits() }}
+                </span>
 
-          <div class="vpc_control-btn" @click="addPeriod" :disabled="isAfterMax()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-          </div>
-          <div v-if="!disableToday" class="vpc_today-btn" @click="goToday" :disabled="todayBtnDisable">امروز</div>
-        </div>
-          <div v-if="!disablePeriod" class="vpc_period-control">
-              <div class="vpc_period-btn" @click="togglePeriod">{{displayPeriodText}}</div>
-          </div>
-      </div>
-      <!--CALENDAR GRID-->
-      <transition
-              :name="transitionAction"
-              @after-leave="afterLeave"
-      >
-        <div v-if="currentDateChange">
-          <div id="vpc_calendar">
-            <!--DAYS HEADER-->
-            <div id="vpc_days-header">
-              <div>شنبه</div>
-              <div>یکشنبه</div>
-              <div>دوشنبه</div>
-              <div>سه شنبه</div>
-              <div>چهار شنبه</div>
-              <div>پنج شنبه</div>
-              <div>جمعه</div>
+                <div class="vpc_control-btn" @click="addPeriod" :disabled="isAfterMax()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mb-2" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </div>
+                <div v-if="!disableToday" class="vpc_today-btn" @click="goToday" :disabled="todayBtnDisable">امروز</div>
             </div>
-            <!--WEEKS ROW-->
-            <div
-                v-for="week in periodWeeks"
-                :key="week.uid"
-                :class="weekClassObject"
-            >
-                <template v-for="i in getWeekEvents(week[0].startOf('jWeek'))">
-                    <slot
-                            :value="i"
-                            :weekStartDate="$moment(week).startOf('jWeek')"
-                            :top="getEventTop(i)"
-                            name="event"
+            <div v-if="!disablePeriod" class="vpc_period-control">
+                <div class="vpc_period-btn" @click="togglePeriod">{{ displayPeriodText }}</div>
+            </div>
+        </div>
+        <!--CALENDAR GRID-->
+        <transition
+            :name="transitionAction"
+            @after-leave="afterLeave"
+        >
+            <div v-if="currentDateChange">
+                <div id="vpc_calendar">
+                    <!--DAYS HEADER-->
+                    <div id="vpc_days-header">
+                        <div>شنبه</div>
+                        <div>یکشنبه</div>
+                        <div>دوشنبه</div>
+                        <div>سه شنبه</div>
+                        <div>چهار شنبه</div>
+                        <div>پنج شنبه</div>
+                        <div>جمعه</div>
+                    </div>
+                    <!--WEEKS ROW-->
+                    <div
+                        v-for="week in periodWeeks"
+                        :key="week.uid"
+                        :class="weekClassObject"
                     >
-                        <div
-                                :key="i.id"
-                                :class="i.classes"
-                                :style="`top:${getEventTop(i)};background-color:${i.color};`"
-                                class="vpc_event"
-                                @click="$emit('on-event-click', i)"
-                        >
-                            <div :style="{'background-color':i.color}" class="vpc_event-ball"></div>
-                            <span class="vpc_event-start-time" v-if="!hideEventTimes">{{ i.startDateTime.format('HH:mm').toPersianDigits() }}<span> - {{ i.endDateTime.format('HH:mm').toPersianDigits() }} </span>
-                            </span>
-                            <span class="vpc_event-start-date" v-if="!hideEventTimes">{{ i.startDateTime.format('jMM/jDD').toPersianDigits() }}</span>
-                            <span class="vpc_event-title">{{ i.title }}</span>
-                            <span class="vpc_event-end-time" v-if="!hideEventTimes">{{ i.endDateTime.format('HH:mm').toPersianDigits() }}</span>
-                            <span class="vpc_event-end-date" v-if="!hideEventTimes">{{ i.endDateTime.format('jMM/jDD').toPersianDigits() }}</span>
+                        <div class="week_events">
+                            <template v-for="(i, index) in getWeekEventsForCurrentPeriod(week[0].startOf('jWeek'))">
+                                <slot
+                                    :value="i"
+                                    :weekStartDate="$moment(week).startOf('jWeek')"
+                                    :top="getEventTop(i)"
+                                    name="event"
+                                >
+                                    <b-button
+                                        :key="index"
+                                        :class="i.classes"
+                                        :id="`popover-show-event-details_${i.id}_${joinClassesItems(i.classes)}`"
+                                        :style="`top:${getEventTop(i)};background-color:${i.type.color};`"
+                                        class="vpc_event border-0"
+                                    >
+                                        <div :style="{'background-color':i.type.color}" class="vpc_event-ball"></div>
+                                        <span class="vpc_event-start-time"
+                                              v-if="!hideEventTimes">
+                                            {{ i.startDateTime.format('HH:mm').toPersianDigits() }}
+                                            <span>
+                                                - {{ i.endDateTime.format('HH:mm').toPersianDigits() }}
+                                            </span>
+                                        </span>
+                                        <span class="vpc_event-start-date" v-if="!hideEventTimes">
+                                            {{ i.startDateTime.format('jMM/jDD').toPersianDigits() }}
+                                        </span>
+                                        <span class="vpc_event-title">{{ i.title }}</span>
+                                        <span class="vpc_event-end-time" v-if="!hideEventTimes">
+                                            {{ i.endDateTime.format('HH:mm').toPersianDigits() }}
+                                        </span>
+                                        <span class="vpc_event-end-date" v-if="!hideEventTimes">
+                                            {{ i.endDateTime.format('jMM/jDD').toPersianDigits() }}
+                                        </span>
+                                    </b-button>
+                                </slot>
+
+                                <!-- popover for show details of event-->
+<!--                                <b-popover :target="`popover-show-event-details_${i.id}_${joinClassesItems(i.classes)}`" triggers="focus"-->
+<!--                                           container="persian-calendar"-->
+<!--                                           custom-class="popover-show-event-details">-->
+<!--                                    <b-card-->
+<!--                                        header="جزئیات رویداد"-->
+<!--                                        header-class="card-header-class p-2"-->
+<!--                                        body-class="card-body-class p-2"-->
+<!--                                        footer-class="card-footer-class p-2"-->
+<!--                                    >-->
+<!--                                        &lt;!&ndash; header &ndash;&gt;-->
+<!--                                        <template #header>-->
+<!--                                            <div class="d-flex justify-content-between">-->
+<!--                                                <b class="event-title">{{ i.title }}</b>-->
+<!--                                                <div v-if="i.type.value !== 'hami'" class="event-action">-->
+<!--                                                    <i class="fa fa-trash-o" title="حذف رویداد"-->
+<!--                                                       @click="$emit('on-event-delete', i)"></i>-->
+<!--                                                    <i class="fa fa-pencil-square-o" title="ویرایش رویداد"-->
+<!--                                                       @click="$emit('on-event-click', i)"></i>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </template>-->
+
+<!--                                        &lt;!&ndash; body &ndash;&gt;-->
+<!--                                        <div class="mb-2">-->
+<!--                                            <p>{{ i.title }}</p>-->
+<!--                                        </div>-->
+<!--                                        <div class="mb-2">-->
+<!--                                            <small class="text-primary">توضیحات :</small>-->
+<!--                                            <p>{{ i.description }}</p>-->
+<!--                                        </div>-->
+<!--                                        <div class="mb-2">-->
+<!--                                            <small class="text-primary">نوع رویداد :</small>-->
+<!--                                            <div class="d-flex align-items-center">-->
+<!--                                                <span class="d-block ml-2"-->
+<!--                                                      :style="`background-color: ${i.type.color}; width: 7px; height: 7px; border-radius: 50%`"-->
+<!--                                                ></span>-->
+<!--                                                {{ i.type.label }}-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+
+<!--                                        &lt;!&ndash; footer &ndash;&gt;-->
+<!--                                        <template #footer>-->
+<!--                                            <div>-->
+<!--                                                <small>زمان شروع:</small>-->
+<!--                                                <em dir="ltr">-->
+<!--                                                    <b>-->
+<!--                                                        {{-->
+<!--                                                            i.startDateTime.format('jYYYY/jMM/jDD - HH:mm').toPersianDigits()-->
+<!--                                                        }}-->
+<!--                                                    </b>-->
+<!--                                                </em>-->
+<!--                                            </div>-->
+<!--                                            <div>-->
+<!--                                                <small>زمان پایان:</small>-->
+<!--                                                <em dir="ltr">-->
+<!--                                                    <b>-->
+<!--                                                        {{-->
+<!--                                                            i.endDateTime.format('jYYYY/jMM/jDD - HH:mm').toPersianDigits()-->
+<!--                                                        }}-->
+<!--                                                    </b>-->
+<!--                                                </em>-->
+<!--                                            </div>-->
+<!--                                        </template>-->
+<!--                                    </b-card>-->
+<!--                                </b-popover>-->
+
+<!--                                <div-->
+<!--                                    v-if="showWeekEventsButton(week[0].startOf('jWeek')) && index === 0 && period === 'month'"-->
+<!--                                    class="vpc_event offset6 more_event_btn pl-0"-->
+<!--                                    style="top:calc(5.5em + 2px);background-color:#9e9e9e;">-->
+<!--                                    <b-button variant="transparent" size="sm" class="w-100 py-2"-->
+<!--                                              @click="allEventsOfWeek(getWeekEvents(week[0].startOf('jWeek')))">-->
+<!--                                        رویدادهای هفته-->
+<!--                                        ({{ (getWeekEvents(week[0].startOf('jWeek')).length) }})-->
+<!--                                    </b-button>-->
+<!--                                </div>-->
+                            </template>
                         </div>
-                    </slot>
-                </template>
-              <!--DAYS-->
-              <div
-                  v-for="day in week"
-                  :key="day.uid"
-                  :class="dayClassObject(day)"
-                  @click="emitDay(day, $event)"
-              >
-                <div class="vpc_day-number">{{ day.format('jD').toPersianDigits() }}</div>
-              </div>
+                        <!--DAYS-->
+                        <div
+                            v-for="day in week"
+                            :key="day.uid"
+                            :class="dayClassObject(day)"
+                            :id="`popover-show-vacation-description_${day.format('jYYYY-jMM-jDD')}`"
+                            @click="emitDay(day, $event)"
+                        >
+                            <div class="vpc_day-number">{{ day.format('jD').toPersianDigits() }}</div>
+
+                            <b-popover
+                                :target="`popover-show-vacation-description_${day.format('jYYYY-jMM-jDD')}`"
+                                :disabled="!isDayVacation(day)"
+                                triggers="hover"
+                                :container="`popover-show-vacation-description_${day.format('jYYYY-jMM-jDD')}`"
+                                custom-class="popover-show-vacation-description p-2">
+<!--                                {{descriptionOfVacationDay(day)}}-->
+                            </b-popover>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </transition>
+        </transition>
     </div>
 </template>
 
 <script>
+// Import utilities functions
+import './utils'
+
 export default {
   name: 'PersianCalendar',
   props: {
-    dateFormat:{
+    dateFormat: {
       type: String,
       default () {
         return 'jYYYY/jMM/jDD'
@@ -102,6 +214,12 @@ export default {
     },
     displayPeriod: String,
     eventsList: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    vacationsList: {
       type: Array,
       default () {
         return []
@@ -158,8 +276,8 @@ export default {
       max: null
     }
   },
-  computed:{
-    month:{
+  computed: {
+    month: {
       get () {
         return this.currentDate.format('jM')
       },
@@ -205,12 +323,13 @@ export default {
     },
     daysInWeek () {
       const days = []
-      const showDay = this.currentDate.locale('fa')
+      const showDay = this.$moment(this.currentDate)
       let day = showDay.startOf('jWeek')
       do {
         days.push(day)
         day = this.$moment(day).add(1, 'days')
       } while (!day.isSame(this.$moment(showDay).add(7, 'days')))
+      this.$emit('startAndEndOfWeekPeriod', days[0], days[6])
       return days
     },
     weeksInMonth () {
@@ -223,6 +342,7 @@ export default {
           week = []
         }
       }
+      this.$emit('startAndEndOfMonthPeriod', weeks[0][0], weeks.slice(-1)[0][6])
       return weeks
     },
     isWeekPeriod () {
@@ -238,16 +358,13 @@ export default {
       const start = this.$moment(this.currentDate).locale('fa').startOf('jWeek')
       const end = this.$moment(start).locale('fa').add(6, 'days')
       let startformat = 'DD'
-
       if (!start.isSame(end, 'month')) startformat = 'DD jMMMM'
       if (!start.isSame(end, 'year')) startformat = 'DD jMMMM jYYYY'
-
       return `${start.format(startformat)} - ${end.format('DD jMMMM jYYYY')}`
     },
     todayBtnDisable () {
       if (this.min) {
         if (this.max) return !this.$moment().isBetween(this.$moment(this.min).startOf('day'), this.$moment(this.max).endOf('day'))
-
         return this.min.isAfter(this.$moment().startOf('day'), 'day')
       }
       if (this.max) {
@@ -291,7 +408,10 @@ export default {
     this.period = this.displayPeriod
     this.events = this.eventsList
   },
-  methods:{
+  methods: {
+    allEventsOfWeek (weekEvents) {
+      this.$emit('week-events', weekEvents)
+    },
     getDateByFormat (value) {
       try {
         if (typeof value === 'string') return this.$moment(value, this.dateFormat)
@@ -338,13 +458,23 @@ export default {
       this.period = this.isWeekPeriod ? 'month' : 'week'
       this.$emit('update:displayPeriod', this.period)
       this.$emit('on-display-period-change', this.period)
-
       // update transition
       this.currentDateChange = false
     },
+    miladiDate (day) {
+      return this.$moment(day).locale('en').format('YYYY-MM-DD')
+    },
+    isDayVacation (day) {
+      return this.vacationsList.some(e => e.date === this.miladiDate(day))
+    },
+    // descriptionOfVacationDay (day) {
+    //   const vacationDetails = this.vacationsList.find(e => e.date === this.miladiDate(day))
+    //   return vacationDetails?.description
+    // },
     dayClassObject (day) {
+      const jomee = this.$moment(day).jDay() === 6
       const today = day.isSame(this.$moment(), 'day')
-
+      const dayIsVacation = this.vacationsList.some(e => e.date === this.miladiDate(day))
       let disable = false
       if (this.min) {
         disable = (this.min.isValid() && day.isBefore(this.min, 'day')) || disable
@@ -352,14 +482,15 @@ export default {
       if (this.max) {
         disable = (this.max.isValid() && day.isAfter(this.max, 'day')) || disable
       }
-
       return {
         'vpc_day': true,
         'vpc_today': today && !this.disableToday,
         'vpc_past': day.isSameOrBefore(this.$moment(), 'day') && !today && !this.hidePastDaysShadow,
         'vpc_not-current-month': !day.isSame(this.currentDate, 'month') && !this.isWeekPeriod && !this.hideMonthShadow,
         'vpc_week-period-day': this.isWeekPeriod,
-        'vpc_day-disable': disable
+        'vpc_day-disable': disable,
+        'vpc_weekend': jomee,
+        'vpc_vacation': dayIsVacation
       }
     },
     afterLeave () {
@@ -418,15 +549,12 @@ export default {
         })
         const continued = ep.startDateTime.isBefore(weekStart)
         const startOffset = continued ? 0 : this.diff(ep.startDateTime, weekStart)
-
-        const spanContinued =  continued ? this.diff(this.$moment(ep.endDateTime), weekStart) + 1 : this.diff(this.$moment(ep.endDateTime), ep.startDateTime) + 1
+        const spanContinued = continued ? this.diff(this.$moment(ep.endDateTime), weekStart) + 1 : this.diff(this.$moment(ep.endDateTime), ep.startDateTime) + 1
         const span = Math.min(7 - startOffset, spanContinued)
-
         if (continued) ep.classes.push('continued')
         if (this.diff(ep.endDateTime, weekStart) > 6) ep.classes.push('toBeContinued')
         if (ep.endDateTime.isBefore(this.$moment())) ep.classes.push('past')
         if (ep.endDateTime.isBetween(this.$moment(ep.startDateTime), this.$moment(ep.startDateTime).endOf('day'), undefined, '[]')) ep.classes.push('oneDay')
-
         for (let d = 0; d < 7; d++) {
           if (d === startOffset) {
             let s = 0
@@ -443,19 +571,36 @@ export default {
       }
       return results
     },
+    showWeekEventsButton (weekEvents) {
+      let showableEvents = []
+      showableEvents = this.getWeekEvents(weekEvents).filter(event => event.eventRow <= 4) // just show 5 ( 0 <= eventRow <=4 ) row of events
+      return this.getWeekEvents(weekEvents).length !== showableEvents.length
+    },
+    getWeekEventsForCurrentPeriod (weekEvents) {
+      if (this.period === 'month') {
+        let showableEvents = []
+        showableEvents = this.getWeekEvents(weekEvents).filter(event => event.eventRow <= 4) // just show 5 ( 0 <= eventRow <=4 ) row of events
+        return showableEvents
+      } else if (this.period === 'week') {
+        return this.getWeekEvents(weekEvents)
+      }
+    },
     getEventTop (e) {
       // Compute the top position of the event based on its assigned row within the given week.
       const r = e.eventRow
       const h = this.isWeekPeriod ? '2.6em' : '1.3em'
       const b = '2px'
-      return `calc( 2.5em + ${r}*${h} + ${r}*${b})`
+      return `calc( 0em + ${r}*${h} + ${r}*${b})`
+    },
+    joinClassesItems (classes) {
+      return classes.join('_')
     },
     diff (e, s) {
       s.locale('fa')
       e.locale('fa')
       const add_diff = s.clone().startOf('day').add(e.diff(s, 'm'), 'm').locale('fa'),
         diff = e.diff(s, 'day')
-      
+
       if (add_diff.isBefore(e, 'day')) return diff + 1
       return diff
       //const diff = e.diff(s, 'day')
@@ -473,6 +618,6 @@ export default {
   }
 }
 </script>
-<style lang="sass">
-    @import "assets/style"
+<style lang="scss">
+@import "./assets/style.scss";
 </style>
