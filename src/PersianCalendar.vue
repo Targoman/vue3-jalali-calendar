@@ -175,16 +175,14 @@
                             :id="`popover-show-vacation-description_${day.format('jYYYY-jMM-jDD')}`"
                             @click="emitDay(day, $event)"
                         >
-                            <div class="vpc_day-number">{{ day.format('jD').toPersianDigits() }}</div>
-
-                            <b-popover
-                                :target="`popover-show-vacation-description_${day.format('jYYYY-jMM-jDD')}`"
-                                :disabled="!isDayVacation(day)"
-                                triggers="hover"
-                                :container="`popover-show-vacation-description_${day.format('jYYYY-jMM-jDD')}`"
-                                custom-class="popover-show-vacation-description p-2">
-<!--                                {{descriptionOfVacationDay(day)}}-->
-                            </b-popover>
+                            <div class="vpc_day-number">
+                                <div>
+                                    {{ day.format('jD').toPersianDigits() }}
+                                </div>
+                                <div class="vpc_vacations-description">
+                                    {{ descriptionOfVacationDay(day) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -464,13 +462,10 @@ export default {
     miladiDate (day) {
       return this.$moment(day).locale('en').format('YYYY-MM-DD')
     },
-    isDayVacation (day) {
-      return this.vacationsList.some(e => e.date === this.miladiDate(day))
+    descriptionOfVacationDay (day) {
+      const vacationDetails = this.vacationsList.find(e => e.date === this.miladiDate(day))
+      return vacationDetails ? vacationDetails.description : ''
     },
-    // descriptionOfVacationDay (day) {
-    //   const vacationDetails = this.vacationsList.find(e => e.date === this.miladiDate(day))
-    //   return vacationDetails?.description
-    // },
     dayClassObject (day) {
       const jomee = this.$moment(day).jDay() === 6
       const today = day.isSame(this.$moment(), 'day')

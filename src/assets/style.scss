@@ -296,9 +296,18 @@ $color-red-lighten: rgba(255, 0, 37, 0.1);
         }
 
         .vpc_day-number {
-          font-weight: bold;
-          line-height: 1.2em;
-          cursor: pointer;
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          align-items: center;
+
+          .vpc_vacations-description {
+            font-size: 0.6rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+          }
         }
 
         &:last-child {
