@@ -50,6 +50,7 @@
                   <b-textarea
                       id="event-description"
                       v-model="event.description"
+                      rows="3"
                       placeholder="توضیحات رویداد ..."
                       size="sm"
                   ></b-textarea>
@@ -480,6 +481,10 @@ export default {
   font-family: Vazir,serif;
   padding: 30px;
 }
+
+* {
+  font-family: Vazir, serif;
+}
 </style>
 
 <style lang="scss">
@@ -492,6 +497,14 @@ export default {
         top: 10% !important;
 
         .event-modal-content-class {
+            direction: rtl;
+            .event-modal-header-class {
+              direction: rtl;
+              .close {
+                padding: 0;
+                margin: 0;
+              }
+            }
             .event-modal-body-class {
                 .form-group {
                     label {
@@ -521,6 +534,9 @@ export default {
                         }
                     }
                 }
+                input.form-control {
+                    height: 2.3rem;
+                }
 
                 .event-start-hour, .event-end-hour {
                     border-right: 1px solid #dadada;
@@ -543,6 +559,7 @@ export default {
 
             .event-modal-footer-class {
                 padding-top: 0;
+                border-top: none;
             }
         }
     }
