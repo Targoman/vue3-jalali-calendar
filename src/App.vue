@@ -481,6 +481,7 @@ export default {
 
 * {
   font-family: Vazir, serif;
+  direction: rtl;
 }
 </style>
 

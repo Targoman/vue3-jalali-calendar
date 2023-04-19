@@ -155,16 +155,16 @@
 <!--                                    </b-card>-->
 <!--                                </b-popover>-->
 
-<!--                                <div-->
-<!--                                    v-if="showWeekEventsButton(week[0].startOf('jWeek')) && index === 0 && period === 'month'"-->
-<!--                                    class="vpc_event offset6 more_event_btn pl-0"-->
-<!--                                    style="top:calc(5.5em + 2px);background-color:#9e9e9e;">-->
-<!--                                    <b-button variant="transparent" size="sm" class="w-100 py-2"-->
-<!--                                              @click="allEventsOfWeek(getWeekEvents(week[0].startOf('jWeek')))">-->
-<!--                                        رویدادهای هفته-->
-<!--                                        ({{ (getWeekEvents(week[0].startOf('jWeek')).length) }})-->
-<!--                                    </b-button>-->
-<!--                                </div>-->
+                                <div
+                                    v-if="showWeekEventsButton(week[0].startOf('jWeek')) && index === 0 && period === 'month'"
+                                    class="vpc_event offset6 more_event_btn pl-0"
+                                    style="top:calc(5.5em + 2px);background-color:#9e9e9e;">
+                                    <b-button variant="transparent" size="sm" class="w-100 py-2"
+                                              @click="allEventsOfWeek(getWeekEvents(week[0].startOf('jWeek')))">
+                                        رویدادهای هفته
+                                        ({{ (getWeekEvents(week[0].startOf('jWeek')).length) }})
+                                    </b-button>
+                                </div>
                             </template>
                         </div>
                         <!--DAYS-->
