@@ -391,7 +391,7 @@ export default {
         this.event.classes = e.classes
       } else {
         if (this.events.length !== 0) {
-          // this.event.id = _.maxBy(this.events, 'id').id + 1
+          this.event.id = Math.max(...this.events.map(event => event.id)) + 1
         }
 
         this.event.startDateTime = this.$moment(e).format('YYYY/MM/DD HH:mm')
