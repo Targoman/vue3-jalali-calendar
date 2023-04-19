@@ -93,10 +93,11 @@
                   label-for="event-type"
               >
                   <b-form-select id="event-type"
-                               label="value"
-                               v-model="event.type"
+                               v-model="event.type.value"
                                placeholder="نوع رویداد را انتخاب کنید"
-                               :options="types"></b-form-select>
+                               :options="types"
+                               @change="changeEventType"
+                  ></b-form-select>
               </b-form-group>
           </div>
 
@@ -364,14 +365,6 @@ export default {
       ]
     }
   },
-  watch: {
-    'event.type' (type) {
-      const modalHeader = document.querySelector('.event-modal-header-class')
-      if (type && modalHeader) {
-        modalHeader.style.backgroundColor = type.color
-      }
-    }
-  },
   computed: {
     eventModalTitle () {
       return this.eventMode === 'edit' ? 'ویرایش رویداد' : 'رویداد جدید'
@@ -381,6 +374,10 @@ export default {
     }
   },
   methods: {
+      changeEventType(value) {
+          const modalHeader = document.querySelector('.event-modal-header-class')
+          modalHeader.style.backgroundColor = this.types.filter((type) => type.value === value)[0].color
+      },
     showEventModal (e) {
       this.showModalEvent = true
 
@@ -527,7 +524,7 @@ export default {
 
                 .vpd-main {
                     .vpd-input-group input {
-                        height: unset;
+                        height: 2.3rem;
 
                         &::placeholder {
                             font-size: 0.7rem;
@@ -560,6 +557,10 @@ export default {
             .event-modal-footer-class {
                 padding-top: 0;
                 border-top: none;
+
+                button {
+                    width: 70px;
+                }
             }
         }
     }
