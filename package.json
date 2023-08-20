@@ -1,23 +1,40 @@
 {
-  "name": "exsamplevite",
-  "private": true,
-  "version": "0.0.0",
+  "name": "vue3-jalali-calendar",
+  "version": "1.0.5",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Targoman/vue3-jalali-calendar"
+  },
+  "main": "./dist/jalaliCalendar.umd.cjs",
+  "module": "./dist/jalaliCalendar.js",
+  "exports": {
+    ".": {
+      "import": "./dist/jalaliCalendar.js",
+      "require": "./dist/jalaliCalendar.umd.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "bootstrap-vue": "^2.23.1",
-    "vue": "^3.3.4",
-    "vue3-jalali-moment": "^3.0.1"
+    "jalali-moment": "^3.3.11",
+    "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@types/node": "^20.5.1",
     "@vitejs/plugin-vue": "^4.2.3",
-    "sass": "^1.64.2",
+    "sass": "^1.66.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
+    "vite-plugin-css-injected-by-js": "^3.3.0",
     "vue-tsc": "^1.8.5"
   }
 }
