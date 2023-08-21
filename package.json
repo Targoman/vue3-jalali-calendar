@@ -1,6 +1,6 @@
 {
   "name": "vue3-jalali-calendar",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "type": "module",
   "files": [
     "dist"
