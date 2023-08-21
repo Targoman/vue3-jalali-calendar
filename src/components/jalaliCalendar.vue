@@ -55,7 +55,12 @@
 				</div>
 			</div>
 			<div v-if="!disablePeriod" class="vpc_period-control">
-				<button class="vpc_period-btn" style="font-size: 15px" @click="emitDay()">
+				<button
+					v-if="addEventButton"
+					class="vpc_period-btn"
+					style="font-size: 15px"
+					@click="emitDay()"
+				>
 					رویداد جدید
 				</button>
 				<div class="vpc_period-btn" @click="togglePeriod">
@@ -195,6 +200,7 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	addEventButton: Boolean,
 });
 
 const month = computed({
@@ -305,7 +311,7 @@ const todayBtnDisable = ref(true);
 const weekClassObject = computed(() => {
 	return {
 		vpc_week: true,
-		"vpc_week-period": isWeekPeriod,
+		"vpc_week-period": isWeekPeriod.value,
 	};
 });
 
@@ -415,9 +421,13 @@ function miladiDate(day: string | Moment) {
 }
 function descriptionOfVacationDay(day: string | Moment) {
 	//@ts-ignore
-	const vacationDetails = props.vacationsList.find(
-		(e: any) => e.date === miladiDate(day)
-	);
+	const vacationDetails = props.vacationsList.find((e: any) => {
+		return (
+			e.date.format(jalaliFormat) ===
+			moment(day, jalaliFormat).format(jalaliFormat)
+		);
+		// return e.date === miladiDate(day);
+	});
 	//@ts-ignore
 	return vacationDetails ? vacationDetails.title : "";
 }
@@ -432,6 +442,9 @@ function dayClassObject(day: string | Moment) {
 	if (typeof day === "string") day = moment(day, jalaliFormat);
 
 	const today = day.format(jalaliFormat) === getTodayInJalali(); //@ts-ignore
+
+	// console.log({ day });
+
 	const dayIsVacation = props.vacationsList.some(
 		(e: any) => e.date === miladiDate(day)
 	);
@@ -446,7 +459,9 @@ function dayClassObject(day: string | Moment) {
 	return {
 		vpc_day: true,
 		vpc_today: today && !props.disableToday,
-		// vpc_past: day.isBefore(moment(getTodayInJalali(), jalaliFormat)),
+		vpc_past:
+			props.disablePastDays &&
+			day.isBefore(moment(getTodayInJalali(), jalaliFormat)),
 		"vpc_not-current-month": !isWeekPeriod.value && isInCurrentMonth(day),
 		"vpc_week-period-day": isWeekPeriod.value,
 		"vpc_day-disable": disable,
@@ -553,7 +568,7 @@ function emitDay(day?: string, event?: any) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 /** Extra small devices (phones, 600px and down) */
 $xs: "screen and (max-width: 600px)";
 /** Small devices (portrait tablets and large phones, 601px to 768px) */
@@ -817,6 +832,12 @@ $color-red-lighten: rgba(255, 0, 37, 0.1);
 
 				&.vpc_week-period-day {
 					min-height: 600px;
+					.vpc_day-number {
+						justify-content: center;
+						font-size: 1.4em;
+						text-align: center;
+						width: auto !important;
+					}
 				}
 
 				&.vpc_today {
