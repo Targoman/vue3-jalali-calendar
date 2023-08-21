@@ -1,110 +1,112 @@
 <template>
-  <div id="app">
-    <persian-calendar
-      :events-list="events"
-      :show-date="showDate"
-      :display-period.sync="period"
-      @on-day-click="addEvent"
-    >
-    </persian-calendar>
-    <h2>Current Display Period {{period}}</h2>
-  </div>
+	<jalaliCalendar
+		:eventsList="events"
+		:vacationsList="vacations"
+		disablePastDays
+		addEventButton
+		@dayClick="showEventModal"
+		@on-event-click="showEventModal"
+	/>
 </template>
 
-<script>
-import PersianCalendar from './PersianCalendar.vue'
+<script setup lang="ts">
+import { ref } from "vue";
+import jalaliCalendar from "./components/jalaliCalendar.vue";
+import moment from "jalali-moment";
 
-export default {
-  components:{
-    PersianCalendar
-  },
-  data () {
-    return {
-      period:'week',
-      showDate:'1399/05/01',
-      min: this.$moment('1399/05/20', 'jYYYY/jMM/jDD'),
-      max:'1399/05/21',
-      id:90,
-      events:[
-        {id:1, 
-          startDateTime:this.$moment('2020-09-06T13:37:41.020+00:00'),
-          endDateTime:this.$moment('2020-09-06T20:49:41.020+00:00'),
-          title:'رویداد شماره ۱',
-          color:'#2a79b8',
-          classes: ['asd', '123']},
-        {id:2, 
-          startDateTime:this.$moment('1399/05/01 10:30', 'jYYYY/jMM/jDD HH:mm'),
-          endDateTime:this.$moment('1399/05/01 15:00', 'jYYYY/jMM/jDD HH:mm'),
-          title:'رویداد شماره ۲',
-          color:'#a71749',
-          classes: []},
-        {id:7, 
-          startDateTime:this.$moment('1399/04/30 23:30', 'jYYYY/jMM/jDD HH:mm'),
-          endDateTime:this.$moment('1399/05/03 00:30', 'jYYYY/jMM/jDD HH:mm'),
-          title:'گفتگوی اسکایپی با مدیر شرکت آرمان',
-          color:'#a71749'},
-        {id:4, 
-          startDateTime:this.$moment('1399/05/09 10:30', 'jYYYY/jMM/jDD HH:mm'),
-          endDateTime:this.$moment('1399/05/13 14:00', 'jYYYY/jMM/jDD HH:mm'),
-          title:'رویداد شماره ۳',
-          color:'#34147e',
-          classes: []},
-        {id:5, 
-          startDateTime:this.$moment('1399/05/06 10:30', 'jYYYY/jMM/jDD HH:mm'),
-          endDateTime:this.$moment('1399/05/08 18:35', 'jYYYY/jMM/jDD HH:mm'),
-          title:'رویداد شماره ۴',
-          color:'#34147e',
-          classes: []},
-        {id:3, 
-          startDateTime:this.$moment('1399/05/10', 'jYYYY/jMM/jDD'),
-          endDateTime:this.$moment('1399/05/25', 'jYYYY/jMM/jDD'),
-          title:'گفتگوی اسکایپی با مدیر شرکت آرمان',
-          color:'#cb09cb',
-          classes: []}
-      ]
-    }
-  },
-  methods: {
-    addEvent (day) {
-      this.id += 1
-      // console.log(day.format())
-      this.events.push({
-        id: this.id,
-        title: 'test',
-        startDateTime: this.$moment(day),
-        endDateTime: this.$moment(day)
-      })
-      
-    }
-  }
-}
+const showEventModal = (e: any) => (console.log(e), alert("check your log"));
+const events = ref([
+	{
+		startDateTime: moment("2023-03-06T13:37:41.020+00:00"),
+		endDateTime: moment("2023-03-06T20:49:41.020+00:00"),
+		title: "رویداد شماره ۱",
+		color: "#29B6F6",
+	},
+	{
+		startDateTime: moment("1401/12/13 13:30", "jYYYY/jMM/jDD HH:mm"),
+		endDateTime: moment("1401/12/14 15:30", "jYYYY/jMM/jDD HH:mm"),
+		title: "رویداد شماره 11",
+		color: "#29B6F6",
+	},
+	{
+		startDateTime: moment("1402/5/15 08:30", "jYYYY/jMM/jDD HH:mm"),
+		endDateTime: moment("1402/5/30 12:30", "jYYYY/jMM/jDD HH:mm"),
+		title: "رویداد شماره 12",
+		color: "#29B6F6",
+	},
+	{
+		startDateTime: moment("1402/05/24 10:00", "jYYYY/jMM/jDD HH:mm"),
+		endDateTime: moment("1402/05/28 11:30", "jYYYY/jMM/jDD HH:mm"),
+		title: "رویداد شماره 13",
+		color: "#6256e5",
+	},
+	{
+		startDateTime: moment("2023-03-06T13:37:41.020+00:00"),
+		endDateTime: moment("2023-03-06T20:49:41.020+00:00"),
+		title: "رویداد شماره 14",
+		color: "#f5365c",
+	},
+	{
+		startDateTime: moment("2023-03-06T13:37:41.020+00:00"),
+		endDateTime: moment("2023-03-06T20:49:41.020+00:00"),
+		title: "رویداد شماره 15",
+		color: "#6256e5",
+	},
+	{
+		startDateTime: moment("2023-03-06T13:37:41.020+00:00"),
+		endDateTime: moment("2023-03-06T20:49:41.020+00:00"),
+		title: "رویداد شماره 16",
+		color: "#f5365c",
+	},
+	{
+		startDateTime: moment("2023-03-06T13:37:41.020+00:00"),
+		endDateTime: moment("2023-03-06T20:49:41.020+00:00"),
+		title: "رویداد شماره 17",
+		color: "#f5365c",
+	},
+	{
+		startDateTime: moment("1402/05/23 10:30", "jYYYY/jMM/jDD HH:mm"),
+		endDateTime: moment("1402/05/23 15:00", "jYYYY/jMM/jDD HH:mm"),
+		title: "رویداد شماره ۲",
+		color: "#29B6F6",
+		classes: [],
+	},
+	{
+		startDateTime: moment("1401/12/1 23:30", "jYYYY/jMM/jDD HH:mm"),
+		endDateTime: moment("1401/12/03 00:30", "jYYYY/jMM/jDD HH:mm"),
+		title: "گفتگوی اسکایپی با مدیر شرکت آرمان",
+		color: "#f5365c",
+	},
+	{
+		startDateTime: moment("1401/12/09 10:30", "jYYYY/jMM/jDD HH:mm"),
+		endDateTime: moment("1401/12/13 14:00", "jYYYY/jMM/jDD HH:mm"),
+		title: "رویداد شماره ۳",
+		color: "#f5365c",
+		classes: [],
+	},
+	{
+		startDateTime: moment("1401/12/06 10:30", "jYYYY/jMM/jDD HH:mm"),
+		endDateTime: moment("1401/12/08 18:35", "jYYYY/jMM/jDD HH:mm"),
+		title: "رویداد شماره ۴",
+		color: "#29B6F6",
+		classes: [],
+	},
+	{
+		startDateTime: moment("1401/12/10", "jYYYY/jMM/jDD"),
+		endDateTime: moment("1403/12/25", "jYYYY/jMM/jDD"),
+		title: "گفتگوی اسکایپی با مدیر شرکت آرمان",
+		color: "#6256e5",
+		classes: [],
+	},
+]);
+const vacations = ref([
+	{
+		date: moment("1402/05/23 10:30", "jYYYY/jMM/jDD HH:mm"),
+		title: "آغاز نوروز",
+	},
+	{
+		date: moment("1402/05/30", "jYYYY/jMM/jDD"),
+		title: "روز طبیعت",
+	},
+]);
 </script>
-
-<style lang="scss">
-@font-face {
-  font-family: Vazir;
-  src: url('~vazir-font/dist/Vazir.eot');
-  src: url('~vazir-font/dist/Vazir.eot?#iefix') format('embedded-opentype'),
-  url('~vazir-font/dist/Vazir.woff2') format('woff2'),
-  url('~vazir-font/dist/Vazir.woff') format('woff'),
-  url('~vazir-font/dist/Vazir.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Vazir;
-  src: url('~vazir-font/dist/Vazir-Bold.eot');
-  src: url('~vazir-font/dist/Vazir-Bold.eot?#iefix') format('embedded-opentype'),
-  url('~vazir-font/dist/Vazir-Bold.woff2') format('woff2'),
-  url('~vazir-font/dist/Vazir-Bold.woff') format('woff'),
-  url('~vazir-font/dist/Vazir-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-}
-
-#app {
-  font-family: Vazir,serif;
-  padding: 30px;
-}
-</style>

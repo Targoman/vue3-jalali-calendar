@@ -1,66 +1,40 @@
 {
-  "name": "vue-persian-calendar",
-  "version": "0.4.0",
-  "private": false,
-  "main": "dist/persian-calendar.umd.js",
-  "browser": {
-    "./sfc": "src/PersianCalendar.vue"
-  },
+  "name": "vue3-jalali-calendar",
+  "version": "1.0.7",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aminmokhtari94/vue-persian-calendar.git"
+    "url": "https://github.com/Targoman/vue3-jalali-calendar"
   },
-  "description": "A Persian Calendar with Events viewer for Vue.js",
-  "bugs": {
-    "url": "https://github.com/aminmokhtari94/vue-persian-calendar/issues"
+  "main": "./dist/jalaliCalendar.umd.cjs",
+  "module": "./dist/jalaliCalendar.js",
+  "exports": {
+    ".": {
+      "import": "./dist/jalaliCalendar.js",
+      "require": "./dist/jalaliCalendar.umd.cjs"
+    },
+    "./style.css": "./dist/style.css"
   },
-  "homepage": "https://github.com/aminmokhtari94/vue-persian-calendar#readme",
-  "keywords": [
-    "persian-calendar",
-    "vue-calendar",
-    "calendar",
-    "persan-date",
-    "vuejs",
-    "vue.js",
-    "vue calendar"
-  ],
-  "author": "Amin Mokhtari",
-  "license": "ISC",
-  "files": [
-    "dist/*",
-    "src/*",
-    "README.md",
-    "attributes.json",
-    "tags.json"
-  ],
-  "vetur": {
-    "tags": "tags.json",
-    "attributes": "attributes.json"
-  },
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "vue-cli-service build --no-clean --target lib --name persian-calendar src/entry.js",
-    "serve": "vue-cli-service serve"
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "vue-jalali-moment": "^1.0.0"
+    "jalali-moment": "^3.3.11",
+    "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.12",
-    "@vue/cli-plugin-eslint": "~4.5.12",
-    "@vue/cli-service": "~4.5.12",
-    "babel-eslint": "^10.1.0",
-    "core-js": "^3.9.1",
-    "eslint": "^7.23.0",
-    "eslint-plugin-vue": "^7.8.0",
-    "sass": "^1.32.8",
-    "sass-loader": "^11.0.1",
-    "vazir-font": "^27.2.2",
-    "vue": "^2.6.12",
-    "vue-template-compiler": "^2.6.12"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "@types/node": "^20.5.1",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "sass": "^1.66.1",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "vite-plugin-css-injected-by-js": "^3.3.0",
+    "vue-tsc": "^1.8.5"
+  }
 }
