@@ -55,12 +55,7 @@
 				</div>
 			</div>
 			<div v-if="!disablePeriod" class="vpc_period-control">
-				<button
-					v-if="addEventButton"
-					class="vpc_period-btn"
-					style="font-size: 15px"
-					@click="emitDay()"
-				>
+				<button v-if="addEventButton" class="vpc_period-btn" @click="emitDay()">
 					رویداد جدید
 				</button>
 				<div class="vpc_period-btn" @click="togglePeriod">
@@ -708,6 +703,7 @@ $color-red-lighten: rgba(255, 0, 37, 0.1);
 				cursor: pointer !important;
 				background-color: $primary_color !important;
 				color: #fff !important;
+				font-size: 16px !important;
 			}
 		}
 
@@ -728,6 +724,7 @@ $color-red-lighten: rgba(255, 0, 37, 0.1);
 				cursor: pointer !important;
 				background-color: $primary_color !important;
 				color: #fff !important;
+				font-size: 16px !important;
 			}
 		}
 	}
