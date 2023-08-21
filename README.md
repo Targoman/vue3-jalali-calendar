@@ -1,11 +1,13 @@
 # vue3-jalali-calendar
 
+Jalali Calendar for vue 3
+
 with special thanks to @mostafa-jamali & @aminmokhtari94.
 
 ## Preview images
 
-![Alt text](week.png)
-![Alt text](month.png)
+![Alt text](https://github.com/Targoman/vue3-jalali-calendar/blob/master/week.png?raw=true)
+![Alt text](https://github.com/Targoman/vue3-jalali-calendar/blob/master/month.png?raw=true)
 
 ## Links
 

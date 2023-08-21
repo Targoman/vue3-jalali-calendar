@@ -9,6 +9,21 @@
     "type": "git",
     "url": "https://github.com/Targoman/vue3-jalali-calendar"
   },
+  "homepage": "https://vue3-jalali-calendar.netlify.app",
+  "keywords": [
+    "jalali-calendar",
+    "jalali-moment",
+    "persian-calendar",
+    "vue-calendar",
+    "vue-jalali-calendar",
+    "calendar",
+    "persian-date",
+    "vuejs",
+    "vue.js",
+    "vue calendar"
+  ],
+  "author": "Targoman",
+  "license": "ISC",
   "main": "./dist/jalaliCalendar.umd.cjs",
   "module": "./dist/jalaliCalendar.js",
   "exports": {
